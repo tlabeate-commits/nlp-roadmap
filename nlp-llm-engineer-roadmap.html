@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NLP/LLM Engineer Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06080f;
+    --card: #0d1117;
+    --border: #1e2433;
+    --border2: #2d3748;
+    --p: #818cf8;
+    --p2: #a78bfa;
+    --p3: #c4b5fd;
+    --accent: #f472b6;
+    --accent2: #fb7185;
+    --green: #34d399;
+    --cyan: #22d3ee;
+    --yellow: #fbbf24;
+    --muted: #6b7280;
+    --text: #f1f5f9;
+    --dim: #94a3b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 700px 500px at 50% -80px, rgba(129,140,248,0.09), transparent),
+      radial-gradient(ellipse 500px 400px at 100% 50%, rgba(244,114,182,0.05), transparent),
+      radial-gradient(ellipse 400px 400px at 0% 80%, rgba(34,211,238,0.04), transparent);
+    pointer-events: none; z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ── HERO ── */
+  .hero { padding: 60px 0 44px; text-align: center; }
+
+  .hero-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(129,140,248,0.1);
+    border: 1px solid rgba(129,140,248,0.25);
+    border-radius: 100px;
+    padding: 6px 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--p3); margin-bottom: 24px;
+  }
+
+  .hero-chip::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.2} }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(38px, 7vw, 74px);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.03em; margin-bottom: 16px;
+  }
+
+  h1 .hl  { color: var(--p2); }
+  h1 .hl2 { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px; color: var(--dim); font-weight: 300;
+    max-width: 500px; margin: 0 auto 12px; line-height: 1.7;
+  }
+
+  .hero-note {
+    display: inline-block;
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 12px; color: var(--yellow); line-height: 1.6;
+    max-width: 520px; margin-top: 8px;
+  }
+
+  /* ── TIME BANNER ── */
+  .time-banner {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; margin-bottom: 40px;
+  }
+
+  .time-cell {
+    background: var(--card); padding: 20px 16px; text-align: center;
+  }
+
+  .time-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+
+  .time-val {
+    font-family: 'Syne', sans-serif; font-size: 26px;
+    font-weight: 700; line-height: 1; margin-bottom: 4px;
+  }
+
+  .time-note { font-size: 10px; color: var(--muted); font-weight: 300; }
+
+  /* ── PROGRESS ── */
+  .progress-section {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 24px; margin-bottom: 28px;
+  }
+
+  .progress-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .progress-title { font-size: 13px; font-weight: 500; }
+  .progress-pct { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--p); }
+
+  .prog-bar { height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; margin-bottom: 8px; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--p), var(--accent)); border-radius: 100px; transition: width 0.5s ease; width: 0%; }
+  .progress-sub { font-size: 11px; color: var(--muted); }
+
+  /* ── PHASE CARDS ── */
+  .phases { display: flex; flex-direction: column; gap: 14px; }
+
+  .phase {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    transition: border-color 0.25s;
+    animation: slideUp 0.5s ease both;
+  }
+
+  .phase:hover { border-color: var(--border2); }
+
+  @keyframes slideUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  .phase:nth-child(1){animation-delay:0.1s} .phase:nth-child(2){animation-delay:0.18s}
+  .phase:nth-child(3){animation-delay:0.26s} .phase:nth-child(4){animation-delay:0.34s}
+  .phase:nth-child(5){animation-delay:0.42s} .phase:nth-child(6){animation-delay:0.48s}
+
+  .phase-head {
+    display: flex; align-items: center; gap: 16px;
+    padding: 20px 24px; cursor: pointer; user-select: none;
+  }
+
+  .phase.open .phase-head { border-bottom: 1px solid var(--border); }
+
+  .phase-num {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+
+  .phase-info { flex: 1; }
+  .phase-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 2px; letter-spacing: -0.01em; }
+  .phase-meta { font-size: 12px; color: var(--muted); font-weight: 300; }
+
+  .phase-right { display: flex; align-items: center; gap: 10px; }
+
+  .duration-tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    padding: 4px 12px; border-radius: 100px; letter-spacing: 0.05em; white-space: nowrap;
+  }
+
+  .phase-chevron { color: var(--muted); font-size: 18px; transition: transform 0.3s ease; flex-shrink: 0; }
+  .phase.open .phase-chevron { transform: rotate(180deg); }
+
+  .phase-body { display: none; padding: 24px; }
+  .phase.open .phase-body { display: block; }
+
+  /* section labels */
+  .sec-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 12px;
+  }
+
+  /* Topics */
+  .topics {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr));
+    gap: 8px; margin-bottom: 20px;
+  }
+
+  .topic {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 11px 13px; cursor: pointer; transition: all 0.15s ease;
+  }
+
+  .topic:hover { background: rgba(255,255,255,0.04); }
+
+  .topic-check {
+    width: 18px; height: 18px; border-radius: 5px;
+    border: 1.5px solid var(--border2); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s ease; margin-top: 1px;
+  }
+
+  .topic.done .topic-check { background: var(--green); border-color: var(--green); }
+  .topic.done .topic-check::after { content: '✓'; color: #000; font-size: 10px; font-weight: 700; }
+  .topic.done .topic-name { text-decoration: line-through; color: var(--muted); }
+  .topic-name { font-size: 12px; font-weight: 400; line-height: 1.4; }
+
+  /* Resources */
+  .resources { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+
+  .resource {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 8px;
+    font-size: 12px; font-weight: 500; border: 1px solid;
+    transition: opacity 0.15s;
+  }
+
+  .resource:hover { opacity: 0.7; }
+  .resource.free { background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.25); color: var(--green); }
+  .resource.paid { background: rgba(251,191,36,0.08); border-color: rgba(251,191,36,0.25); color: var(--yellow); }
+  .resource.free::before { content: 'FREE ·'; font-family: 'IBM Plex Mono',monospace; font-size: 8px; letter-spacing: 0.1em; }
+  .resource.paid::before { content: 'PAID ·'; font-family: 'IBM Plex Mono',monospace; font-size: 8px; letter-spacing: 0.1em; }
+
+  /* Milestone */
+  .milestone-bar {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+
+  .milestone-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .milestone-text { font-size: 13px; color: var(--dim); line-height: 1.6; }
+  .milestone-text strong { color: var(--text); }
+
+  /* Phase colour themes */
+  .p1 .phase-num { background: rgba(34,211,238,0.12); color: var(--cyan); }
+  .p1 .duration-tag { background: rgba(34,211,238,0.1); color: var(--cyan); }
+  .p2 .phase-num { background: rgba(129,140,248,0.12); color: var(--p); }
+  .p2 .duration-tag { background: rgba(129,140,248,0.1); color: var(--p); }
+  .p3 .phase-num { background: rgba(251,191,36,0.12); color: var(--yellow); }
+  .p3 .duration-tag { background: rgba(251,191,36,0.1); color: var(--yellow); }
+  .p4 .phase-num { background: rgba(167,139,250,0.14); color: var(--p2); }
+  .p4 .duration-tag { background: rgba(167,139,250,0.1); color: var(--p2); }
+  .p5 .phase-num { background: rgba(244,114,182,0.12); color: var(--accent); }
+  .p5 .duration-tag { background: rgba(244,114,182,0.1); color: var(--accent); }
+  .p6 .phase-num { background: rgba(52,211,153,0.12); color: var(--green); }
+  .p6 .duration-tag { background: rgba(52,211,153,0.1); color: var(--green); }
+
+  /* Final box */
+  .ready-box {
+    background: linear-gradient(135deg, rgba(129,140,248,0.07), rgba(244,114,182,0.06));
+    border: 1px solid rgba(129,140,248,0.2);
+    border-radius: 16px; padding: 32px; margin-top: 24px; text-align: center;
+  }
+
+  .ready-box .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--p3); margin-bottom: 12px;
+  }
+
+  .ready-box h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 800;
+    margin-bottom: 10px; letter-spacing: -0.02em;
+  }
+
+  .ready-box p { font-size: 13px; color: var(--dim); line-height: 1.7; max-width: 560px; margin: 0 auto 20px; }
+
+  .salary-pills { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+
+  .salary-pill {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border2);
+    border-radius: 100px; padding: 8px 18px; font-size: 13px; font-weight: 500;
+  }
+
+  .salary-pill span { font-family: 'IBM Plex Mono', monospace; color: var(--p3); font-size: 12px; }
+
+  /* Web Track Badge */
+  .web-track {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(34,211,238,0.08);
+    border: 1px solid rgba(34,211,238,0.22);
+    border-radius: 100px; padding: 3px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--cyan); margin-left: 8px; vertical-align: middle;
+  }
+
+  .web-track::before { content: '🌐'; font-size: 10px; }
+
+  .web-topics {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr));
+    gap: 8px; margin-bottom: 20px;
+  }
+
+  .web-topic {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: rgba(34,211,238,0.04);
+    border: 1px solid rgba(34,211,238,0.18); border-radius: 10px;
+    padding: 11px 13px; cursor: pointer; transition: all 0.15s ease;
+  }
+
+  .web-topic:hover { background: rgba(34,211,238,0.08); }
+  .web-topic .topic-check { border-color: rgba(34,211,238,0.4); }
+  .web-topic.done .topic-check { background: var(--cyan); border-color: var(--cyan); }
+  .web-topic.done .topic-check::after { content: '✓'; color: #000; font-size: 10px; font-weight: 700; }
+  .web-topic.done .topic-name { text-decoration: line-through; color: var(--muted); }
+  .web-topic .topic-name { font-size: 12px; font-weight: 400; line-height: 1.4; color: #a5f3fc; }
+
+  .web-milestone {
+    background: rgba(34,211,238,0.05); border: 1px solid rgba(34,211,238,0.18);
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: flex-start; gap: 12px; margin-top: 12px;
+  }
+
+  .web-milestone .milestone-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .web-milestone .milestone-text { font-size: 13px; color: #a5f3fc; line-height: 1.6; }
+  .web-milestone .milestone-text strong { color: var(--cyan); }
+
+  /* vs ML pill */
+  .vs-box {
+    background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.18);
+    border-radius: 12px; padding: 16px 20px; margin-bottom: 24px;
+    font-size: 13px; color: var(--yellow); line-height: 1.7; text-align: center;
+  }
+
+  .vs-box strong { color: #fff; }
+
+  @media(max-width:600px){
+    .time-banner{grid-template-columns:repeat(2,1fr);}
+    .topics{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-chip">NLP / LLM Engineer Roadmap · 0 → Employed</div>
+    <h1>Build the Next<br><span class="hl">Claude</span> <span class="hl2">.</span></h1>
+    <p class="hero-sub">From zero Python to NLP/LLM engineer — the focused path to building the AI that powers chatbots, assistants, and language models.</p>
+    <div class="hero-note">
+      ⚡ <strong>Same foundations as the ML Engineer plan</strong> — Phases 1–3 are identical. The difference starts in Phase 4 where everything tilts toward language models specifically.
+    </div>
+  </div>
+
+  <!-- TIME BANNER -->
+  <div class="time-banner">
+    <div class="time-cell">
+      <div class="time-label">Earliest hire</div>
+      <div class="time-val" style="color:var(--green)">16mo</div>
+      <div class="time-note">if you stay consistent</div>
+    </div>
+    <div class="time-cell">
+      <div class="time-label">Realistic target</div>
+      <div class="time-val" style="color:var(--p)">20mo</div>
+      <div class="time-note">with strong portfolio</div>
+    </div>
+    <div class="time-cell">
+      <div class="time-label">Conservative</div>
+      <div class="time-val" style="color:var(--yellow)">26mo</div>
+      <div class="time-note">if pace slows mid-way</div>
+    </div>
+    <div class="time-cell">
+      <div class="time-label">Total topics</div>
+      <div class="time-val" style="color:var(--accent)" id="total-count">—</div>
+      <div class="time-note">to check off below</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-header">
+      <span class="progress-title">Your learning progress</span>
+      <span class="progress-pct" id="prog-pct">0%</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+    <div class="progress-sub" id="prog-sub">Check off topics as you complete them ↓</div>
+  </div>
+
+  <!-- VS BOX -->
+  <div class="vs-box">
+    💡 <strong>2 months longer than the general ML path</strong> — because NLP specialisation goes deeper into transformers, language model internals, and fine-tuning techniques that take extra time to properly understand. Worth every week.
+  </div>
+
+  <!-- PHASES -->
+  <div class="phases">
+
+    <!-- PHASE 1 -->
+    <div class="phase p1 open" id="ph1">
+      <div class="phase-head" onclick="tog('ph1')">
+        <div class="phase-num">01</div>
+        <div class="phase-info">
+          <div class="phase-title">Python Foundations</div>
+          <div class="phase-meta">Identical to the ML plan — the language of AI, learned properly</div>
+        </div>
+        <div class="phase-right">
+          <div class="duration-tag">Months 1–2</div>
+          <div class="phase-chevron">▾</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="sec-label">// Topics to master</div>
+        <div class="topics">
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Variables, data types & operators</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Lists, dicts, tuples, sets</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Loops & conditionals</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Functions & scope</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">OOP: classes & inheritance</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">File I/O & error handling</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Pip & virtual environments</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">String manipulation (critical for NLP)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">NumPy arrays & operations</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Pandas DataFrames</div></div>
+        </div>
+        <div class="sec-label">// Best resources</div>
+        <div class="resources">
+          <span class="resource free">CS50P — Harvard Python (YouTube)</span>
+          <span class="resource free">Python.org Official Tutorial</span>
+          <span class="resource free">Kaggle Python Course</span>
+          <span class="resource paid">Automate the Boring Stuff (book)</span>
+        </div>
+        <div class="milestone-bar">
+          <div class="milestone-icon">🎯</div>
+          <div class="milestone-text"><strong>Milestone:</strong> Write a script that reads a text file, counts word frequencies, and outputs the top 20 words. Simple — but it's your first taste of text processing, which is everything in NLP.</div>
+        </div>
+
+        <div class="sec-label" style="margin-top:20px;">// 🌐 Web Track · HTML & CSS <span class="web-track">parallel · weekends only</span></div>
+        <div class="web-topics">
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">HTML structure: tags, headings, links, images</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">HTML forms, inputs & buttons</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">CSS selectors, box model & flexbox</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">CSS colours, fonts & basic layout</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Responsive design with media queries</div></div>
+        </div>
+        <div class="web-milestone">
+          <div class="milestone-icon">🌐</div>
+          <div class="milestone-text"><strong>Web Milestone:</strong> Build a simple static personal page about yourself — name, photo, skills you're learning. Ugly is fine. The goal is understanding HTML structure and CSS styling. Use <a href="https://developer.mozilla.org/en-US/docs/Learn" target="_blank" style="color:var(--cyan)">MDN Web Docs</a> (free).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase p2" id="ph2">
+      <div class="phase-head" onclick="tog('ph2')">
+        <div class="phase-num">02</div>
+        <div class="phase-info">
+          <div class="phase-title">Maths for ML & NLP</div>
+          <div class="phase-meta">Linear algebra is the backbone of every word embedding and attention mechanism</div>
+        </div>
+        <div class="phase-right">
+          <div class="duration-tag">Months 2–4</div>
+          <div class="phase-chevron">▾</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="sec-label">// Topics to master</div>
+        <div class="topics">
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Vectors & vector spaces</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Matrix multiplication & dot products</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Eigenvalues & dimensionality reduction</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Calculus: derivatives & chain rule</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Gradient descent intuition</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Probability & Bayes' theorem</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Entropy & information theory basics</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Softmax & cross-entropy loss</div></div>
+        </div>
+        <div class="sec-label">// Best resources</div>
+        <div class="resources">
+          <span class="resource free">3Blue1Brown — Essence of Linear Algebra</span>
+          <span class="resource free">3Blue1Brown — Neural Networks series</span>
+          <span class="resource free">Mathematics for ML (free PDF — Deisenroth)</span>
+          <span class="resource free">StatQuest with Josh Starmer (YouTube)</span>
+        </div>
+        <div class="milestone-bar">
+          <div class="milestone-icon">🎯</div>
+          <div class="milestone-text"><strong>Milestone:</strong> Implement gradient descent from scratch in NumPy. Then implement softmax by hand. These two operations are inside every LLM — understanding them here pays off for years.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase p3" id="ph3">
+      <div class="phase-head" onclick="tog('ph3')">
+        <div class="phase-num">03</div>
+        <div class="phase-info">
+          <div class="phase-title">Classical NLP & ML Foundations</div>
+          <div class="phase-meta">Text preprocessing, embeddings, and traditional NLP — before the deep learning era</div>
+        </div>
+        <div class="phase-right">
+          <div class="duration-tag">Months 4–7</div>
+          <div class="phase-chevron">▾</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="sec-label">// Topics to master</div>
+        <div class="topics">
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Tokenisation & text normalisation</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Bag of Words & TF-IDF</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Stemming, lemmatisation, stop words</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Named Entity Recognition (NER)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Part-of-speech tagging</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Sentiment analysis (classical)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Word2Vec & GloVe embeddings</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">N-gram language models</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">NLTK & spaCy libraries</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Naive Bayes text classifier</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Train/test splits & evaluation metrics</div></div>
+        </div>
+        <div class="sec-label">// Best resources</div>
+        <div class="resources">
+          <span class="resource free">spaCy Course (free — spacy.io)</span>
+          <span class="resource free">NLTK Book (free online)</span>
+          <span class="resource free">Kaggle NLP Course</span>
+          <span class="resource paid">Speech & Language Processing — Jurafsky (free PDF draft)</span>
+        </div>
+        <div class="milestone-bar">
+          <div class="milestone-icon">🎯</div>
+          <div class="milestone-text"><strong>Milestone:</strong> Build a spam classifier and a sentiment analyser using classical NLP. Then train your own Word2Vec embeddings on a custom corpus. Post both on GitHub with clean READMEs.</div>
+        </div>
+
+        <div class="sec-label" style="margin-top:20px;">// 🌐 Web Track · JavaScript Basics <span class="web-track">parallel · weekends only</span></div>
+        <div class="web-topics">
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">JS variables, functions & DOM manipulation</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Event listeners (clicks, form submissions)</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Fetch API — calling a Python backend</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">JSON: sending & receiving data</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Flask basics — connecting Python to HTML</div></div>
+        </div>
+        <div class="web-milestone">
+          <div class="milestone-icon">🌐</div>
+          <div class="milestone-text"><strong>Web Milestone:</strong> Build a simple Flask web app where a user types text, clicks a button, and your Python sentiment analyser returns a result on screen. This is the bridge moment — Python + HTML + JS working together for the first time.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase p4" id="ph4">
+      <div class="phase-head" onclick="tog('ph4')">
+        <div class="phase-num">04</div>
+        <div class="phase-info">
+          <div class="phase-title">Deep Learning for NLP</div>
+          <div class="phase-meta">Neural networks, RNNs, and the architecture that changed everything — the Transformer</div>
+        </div>
+        <div class="phase-right">
+          <div class="duration-tag">Months 7–12</div>
+          <div class="phase-chevron">▾</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="sec-label">// Topics to master</div>
+        <div class="topics">
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Neural network architecture basics</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Backpropagation & activations</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">PyTorch tensors & autograd</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Building training loops in PyTorch</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">RNNs & LSTMs for sequences</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Seq2Seq models & encoder-decoder</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Attention mechanism (from scratch)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Transformer architecture in depth</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Positional encoding</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Multi-head self-attention</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">BERT architecture (encoder-only)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">GPT architecture (decoder-only)</div></div>
+        </div>
+        <div class="sec-label">// Best resources</div>
+        <div class="resources">
+          <span class="resource free">Andrej Karpathy — "Let's build GPT" (YouTube)</span>
+          <span class="resource free">The Illustrated Transformer — Jay Alammar</span>
+          <span class="resource free">fast.ai NLP course</span>
+          <span class="resource paid">Deep Learning Specialisation — Coursera</span>
+          <span class="resource free">Attention Is All You Need (original paper)</span>
+        </div>
+        <div class="milestone-bar">
+          <div class="milestone-icon">🎯</div>
+          <div class="milestone-text"><strong>Milestone:</strong> Follow Karpathy's tutorial and build a mini-GPT from scratch that generates text. This single project will teach you more about LLMs than any course. It's the most important thing on this entire roadmap.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase p5" id="ph5">
+      <div class="phase-head" onclick="tog('ph5')">
+        <div class="phase-num">05</div>
+        <div class="phase-info">
+          <div class="phase-title">LLM Engineering & Fine-Tuning</div>
+          <div class="phase-meta">HuggingFace, RLHF, LoRA, RAG — the tools used to build production AI systems</div>
+        </div>
+        <div class="phase-right">
+          <div class="duration-tag">Months 12–18</div>
+          <div class="phase-chevron">▾</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="sec-label">// Topics to master</div>
+        <div class="topics">
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">HuggingFace Transformers library</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">HuggingFace Datasets & Tokenizers</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Fine-tuning BERT / RoBERTa</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Fine-tuning GPT-2 / LLaMA / Mistral</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">LoRA & QLoRA (efficient fine-tuning)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">RLHF concepts & PPO basics</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">DPO (Direct Preference Optimisation)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Prompt engineering & few-shot learning</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">RAG — Retrieval Augmented Generation</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Vector databases (Pinecone, Chroma, FAISS)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">LangChain / LlamaIndex</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Evaluating LLMs (BLEU, ROUGE, MMLU)</div></div>
+        </div>
+        <div class="sec-label">// Best resources</div>
+        <div class="resources">
+          <span class="resource free">HuggingFace NLP Course (free)</span>
+          <span class="resource free">LLM Course by Maxime Labonne (GitHub)</span>
+          <span class="resource free">Andrej Karpathy — "Let's build the tokenizer"</span>
+          <span class="resource paid">LLM Engineers Handbook (Iusztin & Labonne)</span>
+          <span class="resource free">TRL library docs (RLHF/DPO)</span>
+        </div>
+        <div class="milestone-bar">
+          <div class="milestone-icon">🎯</div>
+          <div class="milestone-text"><strong>Milestone:</strong> Fine-tune an open-source LLM (LLaMA or Mistral) on a custom dataset using LoRA. Then build a RAG chatbot that answers questions from your own documents. These two projects = your portfolio centrepiece.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div class="phase p6" id="ph6">
+      <div class="phase-head" onclick="tog('ph6')">
+        <div class="phase-num">06</div>
+        <div class="phase-info">
+          <div class="phase-title">Portfolio, Deployment & Job Hunt</div>
+          <div class="phase-meta">Ship real products, build in public, and land your first NLP/LLM role</div>
+        </div>
+        <div class="phase-right">
+          <div class="duration-tag">Months 18–20+</div>
+          <div class="phase-chevron">▾</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="sec-label">// Topics to master</div>
+        <div class="topics">
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Git & GitHub (version control)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Docker for ML environments</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">FastAPI for model serving</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Streamlit / Gradio for demos</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Deploy to HuggingFace Spaces</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Cloud GPU basics (AWS/Lambda Labs)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">3 polished portfolio projects</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Contribute to open-source NLP project</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">NLP interview prep (transformers, attention)</div></div>
+          <div class="topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">LinkedIn & resume optimisation</div></div>
+        </div>
+
+        <div class="sec-label" style="margin-top:4px;">// 🌐 Web Track · Portfolio Frontend <span class="web-track">essential at this stage</span></div>
+        <div class="web-topics">
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Build a personal portfolio website</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Embed live demos of your NLP projects</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">JS: dynamic UI for chatbot/RAG interface</div></div>
+          <div class="web-topic" onclick="toggleTopic(this)"><div class="topic-check"></div><div class="topic-name">Deploy portfolio site (GitHub Pages / Vercel)</div></div>
+        </div>
+        <div class="web-milestone">
+          <div class="milestone-icon">🌐</div>
+          <div class="milestone-text"><strong>Web Milestone:</strong> Your portfolio site should have a live, working demo of your RAG chatbot embedded directly — users can type and get responses in the browser. This is what separates you from candidates who only have a GitHub link. Recruiters will actually play with it.</div>
+        </div>
+        <div class="sec-label">// Best resources</div>
+        <div class="resources">
+          <span class="resource free">HuggingFace Spaces (free hosting)</span>
+          <span class="resource free">Chip Huyen — ML Interviews (free PDF)</span>
+          <span class="resource free">Build in public on LinkedIn / X</span>
+          <span class="resource paid">Designing ML Systems — Chip Huyen</span>
+        </div>
+        <div class="milestone-bar">
+          <div class="milestone-icon">🚀</div>
+          <div class="milestone-text"><strong>You're ready to apply when:</strong> You have 3 deployed NLP projects on HuggingFace Spaces, a fine-tuned open-source model on GitHub, and you can explain attention, tokenisation, and RLHF in an interview without hesitation. That's a hireable NLP engineer.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end phases -->
+
+  <!-- EMPLOYMENT READY -->
+  <div class="ready-box">
+    <div class="eyebrow">// NLP/LLM Employment Outlook · 2025–2026</div>
+    <h2>One of the most in-demand roles in tech</h2>
+    <p>NLP and LLM engineering is exploding right now. Companies building chatbots, AI assistants, document processing systems, and everything in between need engineers who understand language models deeply. Self-taught candidates with strong GitHub portfolios are getting hired — <strong>your projects matter more than your degree.</strong></p>
+    <div class="salary-pills">
+      <div class="salary-pill">NLP Engineer <span>$90K–$140K</span></div>
+      <div class="salary-pill">LLM Engineer (startup) <span>$100K–$160K</span></div>
+      <div class="salary-pill">AI Research Engineer <span>$120K–$200K+</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let total = 0;
+
+  function countAll() {
+    total = document.querySelectorAll('.topic').length;
+    document.getElementById('total-count').textContent = total;
+    updateProgress();
+  }
+
+  function toggleTopic(el) {
+    el.classList.toggle('done');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const done = document.querySelectorAll('.topic.done').length;
+    const pct = total > 0 ? Math.round((done/total)*100) : 0;
+    document.getElementById('prog-pct').textContent = pct + '%';
+    document.getElementById('prog-fill').style.width = pct + '%';
+    const msgs = [
+      'Check off topics as you complete them ↓',
+      'Great start — the journey to building AI begins!',
+      'Python is clicking — the hard part is behind you.',
+      'You understand the maths. Most people never get here.',
+      'Halfway — you\'re doing what most people only talk about.',
+      'Deep learning phase — this is where it gets real.',
+      'LLM territory — you\'re building what powers AI assistants.',
+      '🎉 Portfolio complete — go get that job!'
+    ];
+    const idx = Math.min(Math.floor(pct/14), msgs.length-1);
+    document.getElementById('prog-sub').textContent = `${done} / ${total} topics · ${msgs[idx]}`;
+  }
+
+  function tog(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+
+  countAll();
+</script>
+</body>
+</html>
